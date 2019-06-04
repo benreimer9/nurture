@@ -163,6 +163,7 @@ function loadPage(page, itemId) {
   } else if (page === "about") {
     document.querySelector("#aboutModule").classList.remove("hide");
   } else if (page === "intro") {
+    console.log('in intro, showIntroModule is ', showIntroModule);
     if (showIntroModule) {
       document.querySelector("#introModule").classList.remove("hide");
     }
@@ -175,6 +176,7 @@ function updateList() {
   resetHomePage();
   let listHTML = "<p style='display:none'></p>";
   let list = document.querySelector(".nurtureItemList");
+
   if (nurtureItems.length !== 0) {
     for (var i = 0; i < nurtureItems.length; i++) {
       listHTML =
@@ -316,14 +318,18 @@ function updateStorage() {
 
 function updateDataFromStorage() {
   chrome.storage.sync.get('nurtureItems', function (result) {
-    nurtureItems = result.nurtureItems;
-    updateList();
+    if (result.nurtureItems) {
+      nurtureItems = result.nurtureItems;
+      updateList();
+    }
   });
 }
 
 function getIntroFromStorage() {
   chrome.storage.sync.get('showIntroModule', function (result) {
-    showIntroModule = result.showIntroModule;
+    if (result.showIntroModule !== "undefined") {
+      showIntroModule = result.showIntroModule;
+    }
     loadPage("intro");
   });
 }
