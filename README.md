@@ -1,4 +1,4 @@
-![Image of Nurture App](https://github.com/benreimer9/nurture/blob/master/images/nurtureImg2.png)
+![Image of Nurture App](https://github.com/benreimer9/nurture/blob/master/images/nurtureImg3.png)
 
 ### Nurture
 
