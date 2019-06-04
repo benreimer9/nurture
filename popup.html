@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700|Roboto&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div id="pageController">
+    <div id="introModule" class="hide">
+      <div class="body">
+        <p class="welcome">Welcome to Nurture</p>
+        <p class="">We figure life would be better if you liked the things that were
+          good for you and disliked the things that weren't.
+        </p>
+        <p class="">Identify a like / dislike you want to nurture. Every time you think about it, log how you feel.
+          Our hope is that through self-reflection you begin to build that desired outcome.
+        </p>
+        <p class="introButton small">Begin</p>
+      </div>
+    </div>
+    <div id="homeModule" class="hide">
+      <div class="header">
+        <p class="title">Nurture</p>
+        <div class="addNew"><img src="/images/add.svg" /></div>
+        <div class="about"><img src="/images/about.svg" /></div>
+        <div class="close"><img src="/images/close.svg" /></div>
+      </div>
+      <div class="body">
+        <div class="nurtureItemList"></div>
+      </div>
+    </div>
+    <div id="itemModule" class="hide">
+      <div class="header">
+        <div class="back"><img src="/images/back.svg" /></div>
+        <p class="displayPercent">%</p>
+        <div class="close"><img src="/images/close.svg" /></div>
+      </div>
+      <div class="body">
+        <p class="displayAction"></p>
+        <p class="displayReason"></p>
+        <div class="subText">
+          <p>Not True</p>
+          <p>Very True</p>
+        </div>
+        <div class="faces">
+          <div class="face notTrue">
+            <img id="notTrue" src="/images/hate.svg" />
+            <div class="dots"></div>
+          </div>
+          <div class="face mostlyNotTrue">
+            <img id="mostlyNotTrue" src="/images/unhappy.svg" />
+            <div class="dots"></div>
+          </div>
+          <div class="face neutral">
+            <img id="neutral" src="/images/neutral.svg" />
+            <div class="dots"></div>
+          </div>
+          <div class="face mostlyTrue">
+            <img id="mostlyTrue" src="/images/happy.svg" />
+            <div class="dots"></div>
+          </div>
+          <div class="face veryTrue">
+            <img id="veryTrue" src="/images/love.svg" />
+            <div class="dots"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="addNewModule" class="hide">
+      <div class="header">
+        <div class="back"><img src="/images/back.svg" /></div>
+        <p class="title">New</p>
+        <div class="close"><img src="/images/close.svg" /></div>
+      </div>
+      <div class="body">
+        <form>
+          <div class="goalToggle">
+            <p class="toggleLike">LIKE</p>
+            <p class="toggleDislike">DISLIKE</p>
+            <input class="goalResult" name="goal" style="display:none" value="like" />
+          </div>
+          <p class="actionLabel">Action</p>
+          <input type="text" class="actionInput" name="action" placeholder="ie. eating vegetables" required />
+          <p class="reasonLabel">What about it do you like?</p>
+          <input type="text" class="reasonInput" name="reason" placeholder="ie. I feel healthy" required />
+          <input type="submit" value="Done" class="submit" />
+        </form>
+      </div>
+    </div>
+    <div id="aboutModule" class="hide">
+      <div class="header">
+        <div class="back"><img src="/images/back.svg" /></div>
+        <p class="title">About</p>
+        <div class="close"><img src="/images/close.svg" /></div>
+      </div>
+      <div class="body">
+        <p>Why Nurture?</p>
+        <p>I believe it's possible to nurture an appreciation (or dislike) for something, by choice. The goal of nurture
+          is to provide
+          a prompt for self-reflection toward your goal, as well as visual feedback to track your progress.
+        </p>
+        <p>If you say "I like vegetables" enough times, maybe you'll start to believe it.</p>
+        <br>
+        <p class="small">Read the making of <a href="/">here</a></p>
+        <p class="small">Ben Reimer - <a href="https://www.benreimer.design" target="_blank">www.benreimer.design</a>
+        </p>
+      </div>
+    </div>
+  </div>
+  <!-- <button id="changeColor"></button> -->
+  <script src="popup.js"></script>
+</body>
+
+</html>

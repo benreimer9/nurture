@@ -1,0 +1,278 @@
+body {
+  padding: 0px;
+  margin: 0px;
+  font-size: 16px;
+  font-family: "Roboto", sans-serif;
+  color:#585858;
+  width: 380px;
+  height: auto;
+  transition: height .2s ease;
+}
+a {
+  /* text-decoration: none; */
+  color : #a76666;
+}
+.hide {
+  display:none;
+}
+.show {
+  display:block;
+}
+.header {
+  background-color: #fbfbfb;
+  height: 32px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.body{
+  margin: 0 27px;
+}
+.title {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  color: #585858;
+  margin: 0;
+  margin-right: auto;
+  margin-left: 15px;
+}
+.addNew,
+.close,
+.about {
+  margin-right: 15px;
+  padding: 0px 3px;
+  display:inline-block;
+}
+.about {
+  padding: 0px 5px;
+}
+.addNew:hover,
+.close:hover,
+.back:hover,
+.about:hover  {
+  cursor: pointer;
+  background-color: #ebebeb;
+}
+.addNew {
+  display: none;
+}
+.back {
+  margin-left: 5px;
+  padding:0px 3px;
+}
+.addNew {
+  display: block;
+}
+.default {
+  font-size: 13px;
+}
+.nurtureItemList .default:hover{
+  cursor: default;
+}
+.nurtureItemList {
+  font-family: Roboto;
+  font-size: 1rem;
+  color: #585858;
+  padding-inline-start: 0px;
+}
+.nurtureItemList p:hover{
+  cursor: pointer;
+}
+#itemModule .header{
+  justify-content: space-between;
+}
+.percent {
+  font-family: Poppins-Bold;
+  font-size: 0.7rem;
+  pointer-events: none;
+}
+.percent.like {
+  color: #5ed27b;
+}
+.percent.dislike {
+  color: #d25e5e;
+}
+.displayPercent {
+  text-transform: uppercase;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 700;
+}
+.displayAction {
+  font-family: Poppins;
+  font-size: 18px;
+  margin-bottom:0px;
+  margin-top:30px;
+  text-align: center;
+}
+.displayReason {
+  font-family: Roboto;
+  font-size: 14px;
+  margin-top:8px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+.subText{
+  width:78%;
+  margin: 0 auto;
+  display:flex;
+  justify-content: space-between;
+}
+.subText p {
+  color:#C6C6C6;
+  font-size: 11px;
+}
+.faces {
+  display: flex;
+  justify-content: center;
+}
+.face {
+  margin: 0 10px;
+}
+.face > img{
+  transition: transform .2s ease;
+}
+.face > img:hover{
+  cursor: pointer;
+  transform: scale(1.07);
+  filter: drop-shadow( 1px 1px 2px rgba(0, 0, 0, .1));
+}
+.dots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 32px;
+  line-height: 5px;
+  margin: 0 auto;
+  margin-bottom: 10px;
+}
+.dot {
+  width: 4px;
+  height: 4px;
+  background-color: #474747;
+  border-radius: 10px;
+  margin: 2px 1px;
+  display: inline-block;
+}
+.newest{
+  animation-name: newDot;
+  animation-duration: .5s;
+  animation-iteration-count: 1;
+}
+#itemModule.like .dot{
+  background-color: #5ED27B;
+}
+#itemModule.like .displayPercent {
+  color: #5ED27B;
+} 
+#itemModule.dislike .dot {
+  background-color: #D25E5E;
+}
+#itemModule.dislike .displayPercent {
+  color: #D25E5E;
+}
+.goalToggle{
+  margin: 15px 0px;
+}
+.goalToggle p{
+  display:inline-block;
+  font-family: Poppins;
+  font-weight: 700;
+  font-size: 12px; 
+  color: #C5C5C5;
+}
+.goalToggle .toggleLike{
+  margin-right: 5px;
+}
+.goalToggle .toggleLike:hover,
+.goalToggle .toggleDislike:hover{
+  cursor: pointer;
+}
+.goalToggle .toggleLike.active{
+  color:#5ED27B
+}
+.goalToggle .toggleDislike.active{
+  color:#D25E5E
+}
+form p {
+  font-family: Roboto;
+  font-size: 13px;
+  color:#585858;
+  margin-bottom: 4px;
+  margin-top:0px;
+}
+form input{
+  font-size: 13px;
+  border-style: none;
+  border-bottom: 1px solid #f3f3f3;
+  margin-bottom: 23px;
+  width: 250px;
+}
+form input::placeholder{
+  color:#cacaca;
+}
+form input:focus{
+  outline: 0;
+  border-bottom: 1px solid #585858;
+}
+form input.submit{
+  width: auto;
+  position: absolute;
+  margin-right: 0px;
+  right: 12px;
+  bottom: 20px;
+  margin: 0px;
+  border-bottom: 0px;
+  font-size: 12px;
+  color: #ABA9A9;
+  transition: background-color .2s ease;
+}
+input.submit:hover{
+  cursor: pointer;
+  background-color: rgb(241, 241, 241);
+}
+form input.submit.canSubmit{
+  color: #585858;
+}
+#aboutModule p{
+  font-size: 14px;
+  line-height: 20px;
+}
+p.small {
+  font-size: 12px;
+  line-height: 17px;
+}
+
+#introModule p{
+  font-size: 14px;
+  line-height: 20px;
+}
+#introModule p.welcome{
+  font-size: 20px;
+  color:#5ED27B;
+  font-family: "Poppins", sans-serif;
+}
+#introModule .introButton {
+  font-size: 13px;
+  display:inline-block;
+  /* border: 1px solid rgb(201, 201, 201); */
+  background : #f0f0f0;
+  color:#474747;
+  padding: 1px 10px;
+  border-radius: 3px;
+  transition: transform .2s ease;
+}
+.introButton:hover{
+  cursor: pointer;
+  transform:scale(1.05);
+}
+@keyframes newDot {
+  from {
+    transform:scale(0);
+  }
+  to {
+    transform:scale(1);
+  }
+}
