@@ -52,7 +52,7 @@ let nurtureItems = [
   // }
 ];
 let activeItemId = null;
-let maxDotsToShow = 20;
+let maxDotsToShow = 25;
 let showIntroModule = true;
 
 
@@ -144,14 +144,15 @@ document.querySelector("form").addEventListener("submit", function (event) {
 /*******************/
 
 function loadPage(page, itemId) {
+  resetHomePage();
+  resetItemPage()
   document.querySelector("#homeModule").classList.add("hide");
   document.querySelector("#itemModule").classList.add("hide");
   document.querySelector("#addNewModule").classList.add("hide");
   document.querySelector("#aboutModule").classList.add("hide");
   document.querySelector("#introModule").classList.add("hide");
   activeItemId = null;
-  resetHomePage();
-  resetItemPage()
+
   if (page === "home") {
     document.querySelector("#homeModule").classList.remove("hide");
     updateList();
@@ -342,13 +343,15 @@ chrome.storage.onChanged.addListener(updateList)
 /*******************/
 
 function resetHomePage() {
+  // document.querySelector(".nurtureItemList").remove();
+  // document.querySelector("#homeModule .body").insertAdjacentHTML("afterbegin", `<div class="nurtureItemList></div>"`);
+
   let items = document.querySelectorAll(".nurtureItemList > p");
   for (var i = 0; i < items.length; i++) {
-    while (items[i].firstChild) {
-      items[i].firstChild.remove();
-    }
+    items[i].remove();
   }
 }
+
 function resetItemPage() {
   document.querySelector("#itemModule").classList.remove("like");
   document.querySelector("#itemModule").classList.remove("dislike");
