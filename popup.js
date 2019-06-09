@@ -52,7 +52,7 @@ let nurtureItems = [
   // }
 ];
 let activeItemId = null;
-let maxDotsToShow = 25;
+let maxDotsToShow = 20;
 let showIntroModule = true;
 
 
@@ -269,7 +269,7 @@ function formGoalToggle(goal) {
     document.querySelector(".toggleDislike").classList.remove("active");
     document.querySelector(".actionLabel").innerHTML = "I'm learning to like...";
     document.querySelector(".actionInput").placeholder = "ie. eating vegetables";
-    document.querySelector(".reasonLabel").innerHTML = "What about it do you like?";
+    document.querySelector(".reasonLabel").innerHTML = "What about it do you want to like?";
     document.querySelector(".reasonInput").placeholder = "ie. I feel healthy";
     document.querySelector(".goalResult").value = "like";
   }
@@ -278,7 +278,7 @@ function formGoalToggle(goal) {
     document.querySelector(".toggleDislike").classList.add("active");
     document.querySelector(".actionLabel").innerHTML = "I'm learning to dislike...";
     document.querySelector(".actionInput").placeholder = "ie. social media";
-    document.querySelector(".reasonLabel").innerHTML = "What about it do you dislike?";
+    document.querySelector(".reasonLabel").innerHTML = "What about it do you want to dislike?";
     document.querySelector(".reasonInput").placeholder = "ie. Feels like a waste of time";
     document.querySelector(".goalResult").value = "dislike";
   }

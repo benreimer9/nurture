@@ -1,3 +1,6 @@
+* {
+    transition: height .2s ease;
+}
 body {
   padding: 0px;
   margin: 0px;
@@ -67,6 +70,11 @@ a {
 }
 .default {
   font-size: 13px;
+}
+li {
+  font-size: 13px;
+  margin-bottom: 5px;
+  line-height: 17px;
 }
 .nurtureItemList .default:hover{
   cursor: default;
@@ -261,9 +269,11 @@ p.small {
   line-height: 20px;
 }
 #introModule p.welcome{
-  font-size: 20px;
+  /* font-size: 20px;
   color:#5ED27B;
-  font-family: "Poppins", sans-serif;
+  font-family: "Poppins", sans-serif; */
+  margin-left:0px;
+  margin-top: 25px;
 }
 #introModule .introButton {
   font-size: 13px;
