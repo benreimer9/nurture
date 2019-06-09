@@ -54,6 +54,8 @@ let nurtureItems = [
 let activeItemId = null;
 let maxDotsToShow = 20;
 let showIntroModule = true;
+let removeIsActive = false;
+let classShowRemove = "" //"showRemove" if true, anything else if false
 
 
 /***************************/
@@ -63,7 +65,13 @@ let showIntroModule = true;
 //open a specific item
 document.querySelector(".nurtureItemList").addEventListener("click", e => {
   let itemId = e.target.id;
+  let classNames = e.target.className;
+  console.log("classNames ", classNames);
   if (itemId === "default") { return }
+  if (classNames.includes("showRemove")) {
+    removeItemFromList(itemId);
+    return;
+  }
   loadPage("item", itemId);
 });
 
@@ -90,6 +98,19 @@ for (var i = 0; i < addNew.length; i++) {
     loadPage("addNew")
   });
 }
+
+//Remove item buttons
+// const removes = document.querySelectorAll(".remove");
+// for (var i = 0; i < removes.length; i++) {
+//   removes[i].addEventListener("click", (e) => {
+//     removeItemFromList(e.target.id)
+//   });
+// }
+
+//Delete button (in header)
+document.querySelector(".delete").addEventListener("click", () => {
+  toggleRemoveButtons();
+});
 
 //About page
 document.querySelector(".about").addEventListener("click", () => {
@@ -182,7 +203,8 @@ function updateList() {
     for (var i = 0; i < nurtureItems.length; i++) {
       listHTML =
         listHTML +
-        `<p id=${nurtureItems[i].id}>
+        `<p id=${nurtureItems[i].id} class="${classShowRemove}">
+          <span class="remove"> - </span>
           ${nurtureItems[i].action}
           <span class="percent ${nurtureItems[i].goal}">${nurtureItems[i].percent}%</span>
         </p>`;
@@ -191,6 +213,35 @@ function updateList() {
     listHTML = "<p class='default' id='default'>Click + to make your first item!</p>";
   }
   list.insertAdjacentHTML("afterbegin", listHTML);
+}
+
+function removeItemFromList(itemId) {
+  console.log("SPLICING : ");
+  console.log('array ', nurtureItems);
+  console.log('id ', itemId);
+  nurtureItems.splice(itemId, 1);
+  for (let i = 0; i < nurtureItems.length; i++) {
+    nurtureItems[i].id = i;
+  }
+  if (nurtureItems.length === 0) {
+    toggleRemoveButtons();
+  }
+  updateStorage();
+  updateList();
+}
+
+function toggleRemoveButtons() {
+
+  removeIsActive = !removeIsActive;
+  if (removeIsActive) {
+    document.querySelector(".delete").classList.add("active");
+    classShowRemove = "showRemove"
+  }
+  else {
+    document.querySelector(".delete").classList.remove("active");
+    classShowRemove = "";
+  }
+  updateList();
 }
 
 function displayItem(itemId) {

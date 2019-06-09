@@ -43,7 +43,8 @@ a {
 }
 .addNew,
 .close,
-.about {
+.about,
+.delete {
   margin-right: 15px;
   padding: 0px 4px;
   display:inline-block;
@@ -51,11 +52,18 @@ a {
 .about {
   padding: 0px 7px;
 }
+.delete {
+  padding-bottom: 5px;
+}
 .addNew:hover,
 .close:hover,
 .back:hover,
-.about:hover  {
+.about:hover,
+.delete:hover  {
   cursor: pointer;
+  background-color: #ebebeb;
+}
+.delete.active{
   background-color: #ebebeb;
 }
 .addNew {
@@ -296,4 +304,30 @@ p.small {
   to {
     transform:scale(1);
   }
+}
+
+.remove {
+  display: none;
+  font-weight: 700;
+  font-family: "Poppins", sans-serif;
+  color: #D25E5E;
+  transition: all .2s ease;
+  padding-left: 5px;
+  padding-right:0px;
+  margin-right: 5px;
+  pointer-events: none;
+}
+.remove:hover{
+  /* background-color:#D25E5E;
+  color:#fff; */
+}
+.showRemove span.remove{
+  display:inline-block;
+}
+.showRemove{
+  transition: all .25s ease;
+  border-radius: 3px;
+}
+.showRemove:hover{
+  background-color: #FDEBEB;
 }
