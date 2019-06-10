@@ -184,7 +184,6 @@ function loadPage(page, itemId) {
   } else if (page === "about") {
     document.querySelector("#aboutModule").classList.remove("hide");
   } else if (page === "intro") {
-    console.log('in intro, showIntroModule is ', showIntroModule);
     if (showIntroModule) {
       document.querySelector("#introModule").classList.remove("hide");
     }
@@ -376,10 +375,16 @@ function updateDataFromStorage() {
 
 function getIntroFromStorage() {
   chrome.storage.sync.get('showIntroModule', function (result) {
-    if (result.showIntroModule !== "undefined") {
+
+    if (result.showIntroModule !== undefined) {
       showIntroModule = result.showIntroModule;
     }
-    loadPage("intro");
+    if (showIntroModule) {
+      loadPage("intro");
+    }
+    else {
+      loadPage("home");
+    }
   });
 }
 
@@ -414,21 +419,21 @@ function resetDots() {
   }
 }
 
-document.addEventListener("keypress", e => {
-  if (e.key === "-") {
-    nurtureItems = [];
-    showIntroModule = true;
-    updateStorage();
-    updateDataFromStorage();
+// document.addEventListener("keypress", e => {
+//   if (e.key === "-") {
+//     nurtureItems = [];
+//     showIntroModule = true;
+//     updateStorage();
+//     updateDataFromStorage();
 
-  }
-})
+//   }
+// })
 
-document.addEventListener("keypress", e => {
-  if (e.key === "=") {
-    alert(nurtureItems[activeItemId].log)
-  }
-})
+// document.addEventListener("keypress", e => {
+//   if (e.key === "=") {
+//     alert(nurtureItems[activeItemId].log)
+//   }
+// })
 
 
 //first run
