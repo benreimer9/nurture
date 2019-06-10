@@ -1,6 +1,6 @@
 {
   "name": "Nurture",
-  "version": "1.0",
+  "version": "1.1",
   "description": "Nurture a love for that which is good for you, and a dislike that which is not.",
   "permissions": [
     "activeTab",
