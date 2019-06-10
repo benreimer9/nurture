@@ -66,7 +66,6 @@ let classShowRemove = "" //"showRemove" if true, anything else if false
 document.querySelector(".nurtureItemList").addEventListener("click", e => {
   let itemId = e.target.id;
   let classNames = e.target.className;
-  console.log("classNames ", classNames);
   if (itemId === "default") { return }
   if (classNames.includes("showRemove")) {
     removeItemFromList(itemId);
@@ -265,10 +264,8 @@ function displayDots(itemId) {
   for (var i = 0; i < nurtureItems[itemId].log.length; i++) {
     if (i > maxDotsToShow - 1) return;
     let faceToAddTo = document.querySelector(`.face.${nurtureItems[itemId].log[i]} .dots`);
-    console.log("i : ", i)
     if (i === 0) {
       faceToAddTo.insertAdjacentHTML("afterbegin", `<div class="dot newest" style="opacity:${opacity / 100}"></div>`);
-      console.log("made the newest ", i);
     }
     else {
       faceToAddTo.insertAdjacentHTML("beforeend", `<div class="dot" style="opacity:${opacity / 100}"></div>`);
