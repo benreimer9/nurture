@@ -56,6 +56,7 @@ let maxDotsToShow = 20;
 let showIntroModule = true;
 let removeIsActive = false;
 let classShowRemove = "" //"showRemove" if true, anything else if false
+let userVersion = "1.1.6";
 
 
 /***************************/
@@ -361,6 +362,8 @@ function updateStorage() {
   chrome.storage.sync.set({ nurtureItems: nurtureItems }, function () {
   });
   chrome.storage.sync.set({ showIntroModule: showIntroModule }, function () {
+  });
+  chrome.storage.sync.set({ userVersion: userVersion }, function () {
   });
 }
 
