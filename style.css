@@ -104,10 +104,12 @@ li {
   font-size: 0.7rem;
   pointer-events: none;
 }
-.percent.like {
+.percent.like, 
+.percent.love {
   color: #5ed27b;
 }
-.percent.dislike {
+.percent.dislike,
+.percent.hate {
   color: #d25e5e;
 }
 .displayPercent {
@@ -188,33 +190,58 @@ li {
   animation-duration: .5s;
   animation-iteration-count: 1;
 }
-#itemModule.like .dot{
+#itemModule.like .dot,
+#itemModule.love .dot {
   background-color: #5ED27B;
 }
-#itemModule.like .displayPercent {
+#itemModule.like .displayPercent,
+#itemModule.love .displayPercent {
   color: #5ED27B;
 } 
-#itemModule.dislike .dot {
+#itemModule.dislike .dot,
+#itemModule.hate .dot {
   background-color: #D25E5E;
 }
-#itemModule.dislike .displayPercent {
+#itemModule.dislike .displayPercent,
+#itemModule.hate .displayPercent {
   color: #D25E5E;
 }
 .goalToggle{
   margin: 15px 0px;
 }
-.goalToggle p{
+.goalToggle p {
   display:inline-block;
   font-family: Poppins;
   font-weight: 700;
   font-size: 12px; 
   color: #C5C5C5;
 }
-.goalToggle .toggleLike{
+#aboutModule p {
+  font-size: 14px;
+  line-height: 20px;
+}
+p.small {
+  font-size: 12px;
+  line-height: 17px;
+}
+#aboutModule .intensityToggle p{
+  font-size: 12px;
+}
+.intensityToggle p {
+  display:inline-block;
+  font-family: Poppins;
+  font-weight: 700;
+  color: #C5C5C5;
+}
+.goalToggle .toggleLike {
   margin-right: 5px;
 }
+.intensityToggle .toggleLikeDislike {
+  margin-right: 10px;
+}
 .goalToggle .toggleLike:hover,
-.goalToggle .toggleDislike:hover{
+.goalToggle .toggleDislike:hover,
+.intensityToggle p:hover{
   cursor: pointer;
 }
 .goalToggle .toggleLike.active{
@@ -222,6 +249,26 @@ li {
 }
 .goalToggle .toggleDislike.active{
   color:#D25E5E
+}
+.intensityToggle .green,
+.intensityToggle .red {
+  color: #C5C5C5; 
+}
+.intensityToggle .active .green{
+  color: #5ED27B;
+}
+.intensityToggle .active .red {
+  color: #D25E5E;
+}
+.intensityToggle p{
+  margin-top:8px;
+  transition: color .2s ease;
+}
+.intensityToggle p:hover {
+  color: #999
+}
+.toggleIntenseMode {
+  margin-bottom: 0px;
 }
 form p {
   font-family: Roboto;
@@ -263,14 +310,7 @@ input.submit:hover{
 form input.submit.canSubmit{
   color: #585858;
 }
-#aboutModule p{
-  font-size: 14px;
-  line-height: 20px;
-}
-p.small {
-  font-size: 12px;
-  line-height: 17px;
-}
+
 
 #introModule p{
   font-size: 14px;

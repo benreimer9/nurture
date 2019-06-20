@@ -1,28 +1,5 @@
-// Copyright 2018 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 "use strict";
 
-// let changeColor = document.getElementById("changeColor");
-
-// chrome.storage.sync.set({ color: "#3aa757" }, function () {
-//   console.log("The color is.");
-// });
-
-// chrome.storage.sync.get("color", function(data) {
-//   changeColor.style.backgroundColor = data.color;
-//   changeColor.setAttribute("value", data.color);
-// });
-
-// changeColor.onclick = function(element) {
-//   let color = element.target.value;
-//   chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-//     chrome.tabs.executeScript(tabs[0].id, {
-//       code: 'document.body.style.backgroundColor = "' + color + '";'
-//     });
-//   });
-// };
 
 //fake state
 let nurtureItems = [
@@ -34,29 +11,14 @@ let nurtureItems = [
   //   reason: "The burn in my arms feels like progress",
   //   log: ["veryTrue", "mostlyTrue", "mostlyTrue", "mostlyTrue", "mostlyTrue", "mostlyTrue", "neutral", "neutral", "mostlyNotTrue", "notTrue"]
   // },
-  // {
-  //   id: 1,
-  //   action: "Vegetables",
-  //   percent: 32,
-  //   goal: "like",
-  //   reason: "I like feeling healthy",
-  //   log: ["veryTrue", "mostlyTrue", "mostlyTrue", "mostlyTrue", "mostlyTrue", "mostlyTrue", "neutral", "neutral", "mostlyNotTrue", "notTrue"]
-  // },
-  // {
-  //   id: 2,
-  //   action: "Facebook feed",
-  //   percent: 51,
-  //   goal: "dislike",
-  //   reason: "I hate wasting time",
-  //   log: ["veryTrue", "mostlyTrue", "mostlyTrue", "mostlyTrue", "mostlyTrue", "mostlyTrue", "neutral", "neutral", "mostlyNotTrue", "hate"]
-  // }
 ];
 let activeItemId = null;
 let maxDotsToShow = 20;
 let showIntroModule = true;
 let removeIsActive = false;
 let classShowRemove = "" //"showRemove" if true, anything else if false
-let userVersion = "1.1.6";
+let userVersion = "1.1.9"; 
+let intensity = "likeDislike";
 
 
 /***************************/
@@ -72,6 +34,11 @@ document.querySelector(".nurtureItemList").addEventListener("click", e => {
     removeItemFromList(itemId);
     return;
   }
+
+  if (itemId === null || itemId == "" || itemId === undefined || isNaN(itemId)) {
+    return;
+  }
+
   loadPage("item", itemId);
 });
 
@@ -121,7 +88,7 @@ document.querySelector(".about").addEventListener("click", () => {
 document.querySelector(".introButton").addEventListener("click", () => {
   showIntroModule = false;
   loadPage("home");
-  updateStorage();
+  updateStorage(["showIntroModule"]);
 });
 
 //Faces 
@@ -157,6 +124,15 @@ document.querySelector("form").addEventListener("submit", function (event) {
   let reason = event.target.reason.value;
   newItem(goal, action, reason);
   this.reset();
+});
+
+
+//intensity modes
+document.querySelector(".toggleLikeDislike").addEventListener("click", () => {
+  intensityToggle("likeDislike");
+});
+document.querySelector(".toggleLoveHate").addEventListener("click", () => {
+  intensityToggle("loveHate");
 });
 
 
@@ -215,9 +191,6 @@ function updateList() {
 }
 
 function removeItemFromList(itemId) {
-  console.log("SPLICING : ");
-  console.log('array ', nurtureItems);
-  console.log('id ', itemId);
   nurtureItems.splice(itemId, 1);
   for (let i = 0; i < nurtureItems.length; i++) {
     nurtureItems[i].id = i;
@@ -225,7 +198,7 @@ function removeItemFromList(itemId) {
   if (nurtureItems.length === 0) {
     toggleRemoveButtons();
   }
-  updateStorage();
+  updateStorage(["nurtureItems"]);
   updateList();
 }
 
@@ -246,6 +219,7 @@ function toggleRemoveButtons() {
 function displayItem(itemId) {
   activeItemId = itemId;
   let item = nurtureItems[itemId];
+
   document.querySelector("#itemModule .displayPercent").innerHTML = `${item.percent}%`;
   document.querySelector("#itemModule .displayAction").innerHTML = `I ${item.goal} ${item.action}`;
   document.querySelector("#itemModule .displayReason").innerHTML = `${item.reason}`;
@@ -308,27 +282,40 @@ function updatePercent(itemId) {
 function faceClick(faceId) {
   nurtureItems[activeItemId].log.unshift(faceId);
   displayItem(activeItemId);
-  updateStorage();
+  updateStorage(["nurtureItems"]);
 }
 
 function formGoalToggle(goal) {
   if (goal === "like") {
     document.querySelector(".toggleLike").classList.add("active");
     document.querySelector(".toggleDislike").classList.remove("active");
-    document.querySelector(".actionLabel").innerHTML = "I'm learning to like...";
     document.querySelector(".actionInput").placeholder = "ie. eating vegetables";
-    document.querySelector(".reasonLabel").innerHTML = "What about it do you want to like?";
+    if (intensity === "likeDislike"){
+      document.querySelector(".actionLabel").innerHTML = "I'm learning to like...";
+      document.querySelector(".reasonLabel").innerHTML = "What about it do you want to like?";
+      document.querySelector(".goalResult").value = "like";
+    } else {
+      document.querySelector(".actionLabel").innerHTML = "I'm learning to love...";
+      document.querySelector(".reasonLabel").innerHTML = "What about it do you want to love?";
+      document.querySelector(".goalResult").value = "love";
+    }
     document.querySelector(".reasonInput").placeholder = "ie. I feel healthy";
-    document.querySelector(".goalResult").value = "like";
+    
   }
   else if (goal === "dislike") {
     document.querySelector(".toggleLike").classList.remove("active");
     document.querySelector(".toggleDislike").classList.add("active");
-    document.querySelector(".actionLabel").innerHTML = "I'm learning to dislike...";
     document.querySelector(".actionInput").placeholder = "ie. social media";
-    document.querySelector(".reasonLabel").innerHTML = "What about it do you want to dislike?";
+    if (intensity === "likeDislike") {
+      document.querySelector(".actionLabel").innerHTML = "I'm learning to dislike...";
+      document.querySelector(".reasonLabel").innerHTML = "What about it do you want to dislike?";
+      document.querySelector(".goalResult").value = "dislike";
+    } else {
+      document.querySelector(".actionLabel").innerHTML = "I'm learning to hate...";
+      document.querySelector(".reasonLabel").innerHTML = "What about it do you want to hate?";
+      document.querySelector(".goalResult").value = "hate";
+    }
     document.querySelector(".reasonInput").placeholder = "ie. Feels like a waste of time";
-    document.querySelector(".goalResult").value = "dislike";
   }
 }
 
@@ -343,6 +330,44 @@ function formSubmitToggle() {
   }
 }
 
+function intensityToggle(res) {
+
+  if (res === "likeDislike") {
+    intensity = "likeDislike";
+    document.querySelector(".toggleLikeDislike").classList.add("active");
+    document.querySelector(".toggleLoveHate").classList.remove("active");
+    document.querySelector(".toggleLike").innerHTML = "LIKE";
+    document.querySelector(".toggleDislike").innerHTML = "DISLIKE";
+    for (var i = 0; i < nurtureItems.length; i++) {
+      let goal = nurtureItems[i].goal;
+      if (goal === "love" || goal === "like") {
+        nurtureItems[i].goal = "like"
+      } 
+      else if (goal === "hate" || goal === "dislike"){
+        nurtureItems[i].goal = "dislike"
+      }
+    }
+  }
+  else if (res === "loveHate"){
+    intensity = "loveHate";
+    document.querySelector(".toggleLoveHate").classList.add("active");
+    document.querySelector(".toggleLikeDislike").classList.remove("active");
+    document.querySelector(".toggleLike").innerHTML = "LOVE";
+    document.querySelector(".toggleDislike").innerHTML = "HATE";
+    for (var i=0;i<nurtureItems.length;i++){
+      let goal = nurtureItems[i].goal;
+      if (goal === "love" || goal === "like") {
+        nurtureItems[i].goal = "love";
+      } 
+      else if (goal === "hate" || goal === "dislike") {
+        nurtureItems[i].goal = "hate"
+      }
+    }
+  }
+  formGoalToggle("like"); //update values there to match
+  updateStorage(["intensity"]);
+}
+
 function newItem(goal, action, reason) {
   let id = nurtureItems.length;
   let item = {
@@ -354,24 +379,51 @@ function newItem(goal, action, reason) {
     log: [],
   }
   nurtureItems.push(item);
-  updateStorage();
+  updateStorage(["nurtureItems"]);
   loadPage("home");
 }
 
-function updateStorage() {
-  chrome.storage.sync.set({ nurtureItems: nurtureItems }, function () {
-  });
-  chrome.storage.sync.set({ showIntroModule: showIntroModule }, function () {
-  });
-  chrome.storage.sync.set({ userVersion: userVersion }, function () {
-  });
+function updateStorage(toUpdate) {
+
+  if (toUpdate.includes("nurtureItems") || toUpdate.includes("all")) {
+    chrome.storage.sync.set({
+      nurtureItems: nurtureItems
+    }, function () {});
+  }
+
+  if (toUpdate.includes("showIntroModule") || toUpdate.includes("all")) {
+    chrome.storage.sync.set({
+      showIntroModule: showIntroModule
+    }, function () {});
+  }
+
+  if (toUpdate.includes("userVersion") || toUpdate.includes("all")) {
+    chrome.storage.sync.set({
+      userVersion: userVersion
+    }, function () {});
+  }
+
+  if (toUpdate.includes("intensity") || toUpdate.includes("all")) {
+    chrome.storage.sync.set({
+      intensity: intensity
+    }, function () {});
+  }
+    
 }
 
 function updateDataFromStorage() {
+
   chrome.storage.sync.get('nurtureItems', function (result) {
     if (result.nurtureItems) {
       nurtureItems = result.nurtureItems;
       updateList();
+    }
+  });
+  chrome.storage.sync.get('intensity', function (result) {
+
+    if (result.intensity) {
+      intensity = result.intensity;
+      intensityToggle(intensity);
     }
   });
 }
@@ -426,7 +478,8 @@ function resetDots() {
 //   if (e.key === "-") {
 //     nurtureItems = [];
 //     showIntroModule = true;
-//     updateStorage();
+//     intensity = "likeDislike";
+//     updateStorage(["all"]);
 //     updateDataFromStorage();
 
 //   }
