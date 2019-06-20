@@ -17,7 +17,7 @@ let maxDotsToShow = 20;
 let showIntroModule = true;
 let removeIsActive = false;
 let classShowRemove = "" //"showRemove" if true, anything else if false
-let userVersion = "1.1.9"; 
+let userVersion = "1.2.0"; 
 let intensity = "likeDislike";
 
 
@@ -463,6 +463,8 @@ function resetHomePage() {
 function resetItemPage() {
   document.querySelector("#itemModule").classList.remove("like");
   document.querySelector("#itemModule").classList.remove("dislike");
+  document.querySelector("#itemModule").classList.remove("love");
+  document.querySelector("#itemModule").classList.remove("hate");
   resetDots();
 }
 function resetDots() {
