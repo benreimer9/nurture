@@ -26,7 +26,7 @@ let intensity = "likeDislike";
 /***************************/
 
 //open a specific item
-document.querySelector(".nurtureItemList").addEventListener("click", e => {
+const onClickOpenItem = e => {
   let itemId = e.target.id;
   let classNames = e.target.className;
   if (itemId === "default") { return }
@@ -40,83 +40,85 @@ document.querySelector(".nurtureItemList").addEventListener("click", e => {
   }
 
   loadPage("item", itemId);
-});
+}
+document.querySelector(".nurtureItemList").addEventListener("click", onClickOpenItem);
 
-//Back buttons
-const back = document.querySelectorAll(".back");
-for (var i = 0; i < back.length; i++) {
-  back[i].addEventListener("click", () => {
+
+const runBootstrapProcess = () => {
+
+  const onBackButtonClick = () => {
     loadPage("home");
-  });
-}
-
-//Close buttons
-const close = document.querySelectorAll(".close");
-for (var i = 0; i < close.length; i++) {
-  close[i].addEventListener("click", () => {
-    window.close();
-  });
-}
-
-//AddNew buttons
-const addNew = document.querySelectorAll(".addNew");
-for (var i = 0; i < addNew.length; i++) {
-  addNew[i].addEventListener("click", () => {
-    loadPage("addNew")
-  });
-}
-
-//Remove item buttons
-// const removes = document.querySelectorAll(".remove");
-// for (var i = 0; i < removes.length; i++) {
-//   removes[i].addEventListener("click", (e) => {
-//     removeItemFromList(e.target.id)
-//   });
-// }
-
-//Delete button (in header)
-document.querySelector(".delete").addEventListener("click", () => {
-  toggleRemoveButtons();
-});
-
-//About page
-document.querySelector(".about").addEventListener("click", () => {
-  loadPage("about")
-});
-
-//intro page button
-document.querySelector(".introButton").addEventListener("click", () => {
-  showIntroModule = false;
-  loadPage("home");
-  updateStorage(["showIntroModule"]);
-});
-
-//Faces 
-document.querySelector(".faces").addEventListener("click", e => {
-  let targetId = e.target.id;
-  if (targetId === "notTrue" ||
-    targetId === "mostlyNotTrue" ||
-    targetId === "neutral" ||
-    targetId === "mostlyTrue" ||
-    targetId === "veryTrue") {
-    faceClick(targetId);
   }
-})
+  const onCloseButtonClick = () => {
+    window.close();
+  }
+  const onAddNewItemClick = () => {
+    loadPage("addNew")
+  };
+  const onAboutPageClick = () => {
+    loadPage("about")
+  }
+  const onIntroButtonClick = () => {
+    showIntroModule = false;
+    loadPage("home");
+    updateStorage(["showIntroModule"]);
+  }
+  const onHeaderDeleteButtonClick = () => {
+    toggleRemoveButtons();
+  }
+  const onFaceClick = (e) => {
+    let targetId = e.target.id;
+    if (targetId === "notTrue" ||
+      targetId === "mostlyNotTrue" ||
+      targetId === "neutral" ||
+      targetId === "mostlyTrue" ||
+      targetId === "veryTrue") {
+      faceClick(targetId);
+    }
+  }
+
+  document.querySelectorAll(".back")
+    .forEach(backButton => backButton
+      .addEventListener("click", onBackButtonClick)
+    );
+  document.querySelectorAll(".close")
+    .forEach(closeButton => closeButton
+      .addEventListener("click", onCloseButtonClick)
+    );
+  document.querySelectorAll(".addNew")
+    .forEach(addNewItemButton => addNewItemButton
+      .addEventListener("click", onAddNewItemClick)
+    );
+  document.querySelector(".about")
+    .addEventListener("click", onAboutPageClick);
+  document.querySelector(".introButton")
+    .addEventListener("click", onIntroButtonClick)
+  document.querySelector(".delete")
+    .addEventListener("click", onHeaderDeleteButtonClick);
+  document.querySelector(".faces")
+    .addEventListener("click", onFaceClick);
+}
+
+
 
 
 //form
-document.querySelector(".toggleLike").addEventListener("click", () => {
+
+const newItemFormToggleLike = () => {
   formGoalToggle("like");
-});
-document.querySelector(".toggleDislike").addEventListener("click", () => {
+} 
+document.querySelector(".toggleLike")
+  .addEventListener("click", newItemFormToggleLike);
+
+const newItemFormToggleDislike = () => {
   formGoalToggle("dislike");
-});
-document.querySelector(".actionInput").addEventListener("keydown", () => {
-  formSubmitToggle();
-});
-document.querySelector(".reasonInput").addEventListener("keydown", () => {
-  formSubmitToggle();
-});
+}
+document.querySelector(".toggleDislike")
+  .addEventListener("click", newItemFormToggleDislike);
+
+
+
+
 document.querySelector("form").addEventListener("submit", function (event) {
   event.preventDefault();
   let goal = event.target.goal.value;
@@ -319,16 +321,18 @@ function formGoalToggle(goal) {
   }
 }
 
-function formSubmitToggle() {
-  let actionInput = document.querySelector(".actionInput").value;
-  let reasonInput = document.querySelector(".reasonInput").value;
-  if (actionInput && reasonInput) {
-    document.querySelector(".submit").classList.add("canSubmit");
-  }
-  else {
-    document.querySelector(".submit").classList.remove("canSubmit");
-  }
-}
+// function formSubmissionVisibilityToggle() {
+//   let actionInput = document.querySelector(".actionInput").value;
+//   let reasonInput = document.querySelector(".reasonInput").value;
+//   if (actionInput && reasonInput) {
+//     document.querySelector(".submit").classList.add("canSubmit");
+//   }
+//   else {
+//     document.querySelector(".submit").classList.remove("canSubmit");
+//   }
+// }
+
+
 
 function intensityToggle(res) {
 
@@ -495,6 +499,7 @@ function resetDots() {
 
 
 //first run
+runBootstrapProcess();
 updateDataFromStorage();
 getIntroFromStorage();
 formGoalToggle("like");
