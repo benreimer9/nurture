@@ -16,8 +16,7 @@ let activeItemId = null;
 let maxDotsToShow = 20;
 let showIntroModule = true;
 let removeIsActive = false;
-let classShowRemove = "" //"showRemove" if true, anything else if false
-let userVersion = "1.2.0"; 
+let userVersion = "1.2.1";
 let intensity = "likeDislike";
 
 
@@ -106,7 +105,7 @@ const runBootstrapProcess = () => {
 
 const newItemFormToggleLike = () => {
   formGoalToggle("like");
-} 
+}
 document.querySelector(".toggleLike")
   .addEventListener("click", newItemFormToggleLike);
 
@@ -117,105 +116,137 @@ document.querySelector(".toggleDislike")
   .addEventListener("click", newItemFormToggleDislike);
 
 
-
-
-document.querySelector("form").addEventListener("submit", function (event) {
+//FORM
+const submitForm = (event) => {
   event.preventDefault();
   let goal = event.target.goal.value;
   let action = event.target.action.value;
   let reason = event.target.reason.value;
   newItem(goal, action, reason);
-  this.reset();
-});
+  event.srcElement.reset();
+}
+document.querySelector("form")
+  .addEventListener("submit", submitForm)
 
 
-//intensity modes
-document.querySelector(".toggleLikeDislike").addEventListener("click", () => {
+//INTENSITY MODES
+const turnIntensityToLikeDislike = () => {
   intensityToggle("likeDislike");
-});
-document.querySelector(".toggleLoveHate").addEventListener("click", () => {
+}
+const turnIntensityToLoveHate = () => {
   intensityToggle("loveHate");
-});
+}
+document.querySelector(".toggleLikeDislike")
+  .addEventListener("click", turnIntensityToLikeDislike);
+
+document.querySelector(".toggleLoveHate")
+  .addEventListener("click", turnIntensityToLoveHate);
+
 
 
 /*******************/
 /*** FUNCTIONS *****/
 /*******************/
 
+const loadPageHome = () => {
+  showPageById(pageIdsDictionary.home)
+  refreshList();
+}
+const loadPageItem = ({ itemId }) => {
+  showPageById(pageIdsDictionary.item)
+  displayItem(itemId);
+}
+const loadPageAddNew = () => {
+  showPageById(pageIdsDictionary.addNew)
+}
+const loadPageAbout = () => {
+  showPageById(pageIdsDictionary.about)
+}
+const loadPageIntro = () => {
+  showPageById(pageIdsDictionary.intro)
+}
+
+const pageIdsDictionary = {
+  home: {
+    tagId: "#homeModule",
+    onSelectHandler: loadPageHome,
+  },
+  item: {
+    tagId: "#itemModule",
+    onSelectHandler: loadPageItem,
+  },
+  addNew: {
+    tagId: "#addNewModule",
+    onSelectHandler: loadPageAddNew,
+  },
+  about: {
+    tagId: "#aboutModule",
+    onSelectHandler: loadPageAbout,
+  },
+  intro: {
+    tagId: "#introModule",
+    onSelectHandler: loadPageIntro,
+  },
+}
+
+const showPageById = ({ tagId }) => document.querySelector(tagId).classList.remove("hide")
+const hidePageById = ({ tagId }) => document.querySelector(tagId).classList.add("hide")
+const hideAllPages = () => Object.values(pageIdsDictionary).forEach(hidePageById)
+
 function loadPage(page, itemId) {
   resetHomePage();
   resetItemPage()
-  document.querySelector("#homeModule").classList.add("hide");
-  document.querySelector("#itemModule").classList.add("hide");
-  document.querySelector("#addNewModule").classList.add("hide");
-  document.querySelector("#aboutModule").classList.add("hide");
-  document.querySelector("#introModule").classList.add("hide");
+  hideAllPages()
+
   activeItemId = null;
+  const currentPageIdsDictionaryEntry = pageIdsDictionary[page] || pageIdsDictionary.home
 
-  if (page === "home") {
-    document.querySelector("#homeModule").classList.remove("hide");
-    updateList();
-  } else if (page === "item") {
-    document.querySelector("#itemModule").classList.remove("hide");
-    displayItem(itemId);
-  } else if (page === "addNew") {
-    document.querySelector("#addNewModule").classList.remove("hide");
-  } else if (page === "about") {
-    document.querySelector("#aboutModule").classList.remove("hide");
-  } else if (page === "intro") {
-    if (showIntroModule) {
-      document.querySelector("#introModule").classList.remove("hide");
-    }
-    else loadPage("home");
-  }
-
+  currentPageIdsDictionaryEntry.onSelectHandler({ itemId })
 }
 
-function updateList() {
-  resetHomePage();
-  let listHTML = "<p style='display:none'></p>";
-  let list = document.querySelector(".nurtureItemList");
-
-  if (nurtureItems.length !== 0) {
-    for (var i = 0; i < nurtureItems.length; i++) {
-      listHTML =
-        listHTML +
-        `<p id=${nurtureItems[i].id} class="${classShowRemove}">
+const nurtureItemMarkupBuilder = (listHTMLResult, nurtureItem) => listHTMLResult +
+  `<p id=${nurtureItem.id} class="${removeIsActive ? "showRemove" : ""}">
           <span class="remove"> - </span>
-          ${nurtureItems[i].action}
-          <span class="percent ${nurtureItems[i].goal}">${nurtureItems[i].percent}%</span>
-        </p>`;
-    }
-  } else {
-    listHTML = "<p class='default' id='default'>Click + to make your first item!</p>";
-  }
+          ${nurtureItem.action}
+          <span class="percent ${nurtureItem.goal}">${nurtureItem.percent}%</span>
+  </p>`
+
+const defaultNurtureItemMarkup = "<p class='default' id='default'>Click + to make your first item!</p>"
+
+function refreshList() {
+  resetHomePage();
+  let list = document.querySelector(".nurtureItemList");
+  const listHTML = nurtureItems.length !== 0
+    ? nurtureItems.reduce(nurtureItemMarkupBuilder, '')
+    : defaultNurtureItemMarkup;
   list.insertAdjacentHTML("afterbegin", listHTML);
 }
 
+const addIdValuesToItems = (nurtureItem, nurtureItemIndex) => ({
+  ...nurtureItem,
+  id: nurtureItemIndex
+})
+
 function removeItemFromList(itemId) {
-  nurtureItems.splice(itemId, 1);
-  for (let i = 0; i < nurtureItems.length; i++) {
-    nurtureItems[i].id = i;
-  }
-  if (nurtureItems.length === 0) {
-    toggleRemoveButtons();
-  }
+  nurtureItems = nurtureItems
+    .splice(itemId, 1)
+    .map(addIdValuesToItems)
+
+  if (nurtureItems.length === 0) toggleRemoveButtons();
+
   updateStorage(["nurtureItems"]);
-  updateList();
+  refreshList();
+}
+
+const setToggleRemoveVisibility = (newActiveState = false) => {
+  const deleteButtonDomElementClassList = document.querySelector(".delete").classList
+  newActiveState ? deleteButtonDomElementClassList.add("active") : deleteButtonDomElementClassList.remove("active")
 }
 
 function toggleRemoveButtons() {
-
   removeIsActive = !removeIsActive;
-  if (removeIsActive) {
-    document.querySelector(".delete").classList.add("active");
-    classShowRemove = "showRemove"
-  }
-  else {
-    document.querySelector(".delete").classList.remove("active");
-    classShowRemove = "";
-  }
-  updateList();
+  setToggleRemoveVisibility(removeIsActive)
+  refreshList();
 }
 
 function displayItem(itemId) {
@@ -225,6 +256,23 @@ function displayItem(itemId) {
   document.querySelector("#itemModule .displayPercent").innerHTML = `${item.percent}%`;
   document.querySelector("#itemModule .displayAction").innerHTML = `I ${item.goal} ${item.action}`;
   document.querySelector("#itemModule .displayReason").innerHTML = `${item.reason}`;
+
+
+  if (item.goal === "hate" || item.goal === "dislike"){
+    document.querySelector("#notTrue").src = "/images/dislike-notTrue.svg";
+    document.querySelector("#mostlyNotTrue").src = "/images/dislike-mostlyNotTrue.svg";
+    document.querySelector("#neutral").src = "/images/neutral.svg";
+    document.querySelector("#mostlyTrue").src = "/images/dislike-mostlyTrue.svg";
+    document.querySelector("#veryTrue").src = "/images/dislike-veryTrue.svg";
+  }
+  else {
+    document.querySelector("#notTrue").src = "/images/like-notTrue.svg";
+    document.querySelector("#mostlyNotTrue").src = "/images/like-mostlyNotTrue.svg";
+    document.querySelector("#neutral").src = "/images/neutral.svg";
+    document.querySelector("#mostlyTrue").src = "/images/like-mostlyTrue.svg";
+    document.querySelector("#veryTrue").src = "/images/like-veryTrue.svg";
+  }
+
   displayDots(itemId)
   updatePercent(itemId);
 }
@@ -302,7 +350,7 @@ function formGoalToggle(goal) {
       document.querySelector(".goalResult").value = "love";
     }
     document.querySelector(".reasonInput").placeholder = "ie. I feel healthy";
-    
+
   }
   else if (goal === "dislike") {
     document.querySelector(".toggleLike").classList.remove("active");
@@ -346,7 +394,7 @@ function intensityToggle(res) {
       let goal = nurtureItems[i].goal;
       if (goal === "love" || goal === "like") {
         nurtureItems[i].goal = "like"
-      } 
+      }
       else if (goal === "hate" || goal === "dislike"){
         nurtureItems[i].goal = "dislike"
       }
@@ -362,7 +410,7 @@ function intensityToggle(res) {
       let goal = nurtureItems[i].goal;
       if (goal === "love" || goal === "like") {
         nurtureItems[i].goal = "love";
-      } 
+      }
       else if (goal === "hate" || goal === "dislike") {
         nurtureItems[i].goal = "hate"
       }
@@ -412,7 +460,7 @@ function updateStorage(toUpdate) {
       intensity: intensity
     }, function () {});
   }
-    
+
 }
 
 function updateDataFromStorage() {
@@ -420,7 +468,7 @@ function updateDataFromStorage() {
   chrome.storage.sync.get('nurtureItems', function (result) {
     if (result.nurtureItems) {
       nurtureItems = result.nurtureItems;
-      updateList();
+      refreshList();
     }
   });
   chrome.storage.sync.get('intensity', function (result) {
@@ -447,7 +495,7 @@ function getIntroFromStorage() {
   });
 }
 
-chrome.storage.onChanged.addListener(updateList)
+chrome.storage.onChanged.addListener(refreshList)
 
 
 /*******************/

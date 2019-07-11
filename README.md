@@ -4,5 +4,4 @@
 
 A Google Chrome extension for nurturing likes and dislikes.
 
-Get it soon. 
-
+Get it [here](https://chrome.google.com/webstore/detail/nurture/llpkoklagnnpahhbokmimohbmjkhhcjc)
