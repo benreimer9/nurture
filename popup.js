@@ -5,18 +5,26 @@
 let nurtureItems = [
   // {
   //   id: 0,
-  //   action: "Push ups",
+  //   action: "000",
   //   percent: 64,
   //   goal: "like",
   //   reason: "The burn in my arms feels like progress",
   //   log: ["veryTrue", "mostlyTrue", "mostlyTrue", "mostlyTrue", "mostlyTrue", "mostlyTrue", "neutral", "neutral", "mostlyNotTrue", "notTrue"]
   // },
+  // {
+  //   id: 1,
+  //   action: "111",
+  //   percent: 64,
+  //   goal: "like",
+  //   reason: "The burn in my arms feels like progress",
+  //   log: ["veryTrue", "mostlyTrue", "mostlyTrue", "mostlyTrue", "mostlyTrue", "mostlyTrue", "neutral", "neutral", "mostlyNotTrue", "notTrue"]
+  // }
 ];
 let activeItemId = null;
 let maxDotsToShow = 20;
 let showIntroModule = true;
 let removeIsActive = false;
-let userVersion = "1.2.2";
+let userVersion = "1.2.3";
 let intensity = "likeDislike";
 
 
@@ -24,20 +32,21 @@ let intensity = "likeDislike";
 /***** EVENT LISTENERS *****/
 /***************************/
 
-//open a specific item
+//click a specific item
 const onClickOpenItem = e => {
+  
+  
   let itemId = e.target.id;
   let classNames = e.target.className;
   if (itemId === "default") { return }
+  if (itemId === null || itemId === "" || itemId === undefined) {
+    return;
+  }
+
   if (classNames.includes("showRemove")) {
     removeItemFromList(itemId);
     return;
   }
-
-  if (itemId === null || itemId == "" || itemId === undefined || isNaN(itemId)) {
-    return;
-  }
-
   loadPage("item", itemId);
 }
 document.querySelector(".nurtureItemList").addEventListener("click", onClickOpenItem);
@@ -51,9 +60,6 @@ const runBootstrapProcess = () => {
   const onCloseButtonClick = () => {
     window.close();
   }
-  const onAddNewItemClick = () => {
-    loadPage("addNew")
-  };
   const onAboutPageClick = () => {
     loadPage("about")
   }
@@ -84,10 +90,6 @@ const runBootstrapProcess = () => {
     .forEach(closeButton => closeButton
       .addEventListener("click", onCloseButtonClick)
     );
-  document.querySelectorAll(".addNew")
-    .forEach(addNewItemButton => addNewItemButton
-      .addEventListener("click", onAddNewItemClick)
-    );
   document.querySelector(".about")
     .addEventListener("click", onAboutPageClick);
   document.querySelector(".introButton")
@@ -98,11 +100,7 @@ const runBootstrapProcess = () => {
     .addEventListener("click", onFaceClick);
 }
 
-
-
-
 //form
-
 const newItemFormToggleLike = () => {
   formGoalToggle("like");
 }
@@ -205,13 +203,15 @@ function loadPage(page, itemId) {
 }
 
 const nurtureItemMarkupBuilder = (listHTMLResult, nurtureItem) => listHTMLResult +
-  `<p id=${nurtureItem.id} class="${removeIsActive ? "showRemove" : ""}">
+  `<p id=${nurtureItem.id} class="${nurtureItem.goal} ${removeIsActive ? "showRemove" : ""}">
           <span class="remove"> - </span>
           ${nurtureItem.action}
-          <span class="percent ${nurtureItem.goal}">${nurtureItem.percent}%</span>
+          <span class="percent">${nurtureItem.percent}%</span>
   </p>`
 
-const defaultNurtureItemMarkup = "<p class='default' id='default'>Click + to make your first item!</p>"
+const defaultNurtureItemMarkup = "";
+const addNewLight = `<p class="addNew">+ new</p>`;
+const addNewDark = `<p class="addNew darker">+ new</p>`;
 
 function refreshList() {
   resetHomePage();
@@ -219,7 +219,13 @@ function refreshList() {
   const listHTML = nurtureItems.length !== 0
     ? nurtureItems.reduce(nurtureItemMarkupBuilder, '')
     : defaultNurtureItemMarkup;
+  const addNewHTML = nurtureItems.length !== 0
+    ? addNewLight
+    : addNewDark
+  
+  list.insertAdjacentHTML("afterbegin", addNewHTML);
   list.insertAdjacentHTML("afterbegin", listHTML);
+  reattachAddNewListener();
 }
 
 const addIdValuesToItems = (nurtureItem, nurtureItemIndex) => ({
@@ -227,13 +233,13 @@ const addIdValuesToItems = (nurtureItem, nurtureItemIndex) => ({
   id: nurtureItemIndex
 })
 
+
 function removeItemFromList(itemId) {
+
   nurtureItems = nurtureItems
-    .splice(itemId, 1)
-    .map(addIdValuesToItems)
+    .filter( item => item.id != itemId)
 
   if (nurtureItems.length === 0) toggleRemoveButtons();
-
   updateStorage(["nurtureItems"]);
   refreshList();
 }
@@ -249,28 +255,38 @@ function toggleRemoveButtons() {
   refreshList();
 }
 
+function getItemFromNurtureItemsList(itemId){
+  let item;
+  nurtureItems.forEach( nurtureItem => {
+    if (nurtureItem.id === itemId){
+      item = nurtureItem;
+    }
+  });
+  return item; 
+}
+
 function displayItem(itemId) {
   activeItemId = itemId;
-  let item = nurtureItems[itemId];
-
+  let item = getItemFromNurtureItemsList(itemId);
+  console.log("--- after loop, item is : ", item);
   document.querySelector("#itemModule .displayPercent").innerHTML = `${item.percent}%`;
   document.querySelector("#itemModule .displayAction").innerHTML = `I ${item.goal} ${item.action}`;
   document.querySelector("#itemModule .displayReason").innerHTML = `${item.reason}`;
 
 
   if (item.goal === "hate" || item.goal === "dislike"){
-    document.querySelector("#notTrue").src = "/images/dislike-notTrue.svg";
-    document.querySelector("#mostlyNotTrue").src = "/images/dislike-mostlyNotTrue.svg";
-    document.querySelector("#neutral").src = "/images/neutral.svg";
-    document.querySelector("#mostlyTrue").src = "/images/dislike-mostlyTrue.svg";
-    document.querySelector("#veryTrue").src = "/images/dislike-veryTrue.svg";
+    document.querySelector("#notTrue img").src = "/images/dislike-notTrue.svg";
+    document.querySelector("#mostlyNotTrue img").src = "/images/dislike-mostlyNotTrue.svg";
+    document.querySelector("#neutral img").src = "/images/neutral.svg";
+    document.querySelector("#mostlyTrue img").src = "/images/dislike-mostlyTrue.svg";
+    document.querySelector("#veryTrue img").src = "/images/dislike-veryTrue.svg";
   }
   else {
-    document.querySelector("#notTrue").src = "/images/like-notTrue.svg";
-    document.querySelector("#mostlyNotTrue").src = "/images/like-mostlyNotTrue.svg";
-    document.querySelector("#neutral").src = "/images/neutral.svg";
-    document.querySelector("#mostlyTrue").src = "/images/like-mostlyTrue.svg";
-    document.querySelector("#veryTrue").src = "/images/like-veryTrue.svg";
+    document.querySelector("#notTrue img").src = "/images/like-notTrue.svg";
+    document.querySelector("#mostlyNotTrue img").src = "/images/like-mostlyNotTrue.svg";
+    document.querySelector("#neutral img").src = "/images/neutral.svg";
+    document.querySelector("#mostlyTrue img").src = "/images/like-mostlyTrue.svg";
+    document.querySelector("#veryTrue img").src = "/images/like-veryTrue.svg";
   }
 
   displayDots(itemId)
@@ -284,10 +300,11 @@ function displayDots(itemId) {
   let opacityReducer = 100 / maxDotsToShow;
   if (maxDotsToShow <= 5) opacityReducer = 5;
 
-  document.querySelector("#itemModule").classList.add(`${nurtureItems[itemId].goal}`)
-  for (var i = 0; i < nurtureItems[itemId].log.length; i++) {
+  let item = getItemFromNurtureItemsList(itemId);
+  document.querySelector("#itemModule").classList.add(`${item.goal}`)
+  for (var i = 0; i < item.log.length; i++) {
     if (i > maxDotsToShow - 1) return;
-    let faceToAddTo = document.querySelector(`.face.${nurtureItems[itemId].log[i]} .dots`);
+    let faceToAddTo = document.querySelector(`.face.${item.log[i]} .dots`);
     if (i === 0) {
       faceToAddTo.insertAdjacentHTML("afterbegin", `<div class="dot newest" style="opacity:${opacity / 100}"></div>`);
     }
@@ -304,10 +321,11 @@ function updatePercent(itemId) {
 
   let percent = 0;
   let faceValue = 25 / maxDotsToShow;
+  let item = getItemFromNurtureItemsList(itemId);
 
-  for (let i = 0; i < nurtureItems[itemId].log.length; i++) {
+  for (let i = 0; i < item.log.length; i++) {
     if (i < maxDotsToShow) {
-      switch (nurtureItems[itemId].log[i]) {
+      switch (item.log[i]) {
         case "veryTrue":
           percent += faceValue * 4;
           break;
@@ -325,12 +343,15 @@ function updatePercent(itemId) {
       }
     }
   }
-  nurtureItems[itemId].percent = percent;
+  percent = Math.round(percent);
+  item.percent = percent;
+
   document.querySelector(".displayPercent").innerHTML = `${percent}%`;
 }
 
 function faceClick(faceId) {
-  nurtureItems[activeItemId].log.unshift(faceId);
+  let item = getItemFromNurtureItemsList(activeItemId);
+  item.log.unshift(faceId);
   displayItem(activeItemId);
   updateStorage(["nurtureItems"]);
 }
@@ -368,18 +389,6 @@ function formGoalToggle(goal) {
     document.querySelector(".reasonInput").placeholder = "ie. Feels like a waste of time";
   }
 }
-
-// function formSubmissionVisibilityToggle() {
-//   let actionInput = document.querySelector(".actionInput").value;
-//   let reasonInput = document.querySelector(".reasonInput").value;
-//   if (actionInput && reasonInput) {
-//     document.querySelector(".submit").classList.add("canSubmit");
-//   }
-//   else {
-//     document.querySelector(".submit").classList.remove("canSubmit");
-//   }
-// }
-
 
 
 function intensityToggle(res) {
@@ -421,7 +430,7 @@ function intensityToggle(res) {
 }
 
 function newItem(goal, action, reason) {
-  let id = nurtureItems.length;
+  let id = getNewItemId();
   let item = {
     id: id,
     action: action,
@@ -433,6 +442,15 @@ function newItem(goal, action, reason) {
   nurtureItems.push(item);
   updateStorage(["nurtureItems"]);
   loadPage("home");
+}
+
+function getNewItemId() {
+  var id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    var r = Math.random() * 16 | 0,
+      v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+  return id;
 }
 
 function updateStorage(toUpdate) {
@@ -528,16 +546,23 @@ function resetDots() {
   }
 }
 
-// document.addEventListener("keypress", e => {
-//   if (e.key === "-") {
-//     nurtureItems = [];
-//     showIntroModule = true;
-//     intensity = "likeDislike";
-//     updateStorage(["all"]);
-//     updateDataFromStorage();
+function reattachAddNewListener(){
+  document.querySelector(".addNew")
+    .addEventListener("click", onAddNewItemClick);
+}
+const onAddNewItemClick = () => {
+  loadPage("addNew")
+};
 
-//   }
-// })
+document.addEventListener("keypress", e => {
+  if (e.key === "-") {
+    nurtureItems = [];
+    showIntroModule = true;
+    intensity = "likeDislike";
+    updateStorage(["all"]);
+    updateDataFromStorage();
+  }
+})
 
 // document.addEventListener("keypress", e => {
 //   if (e.key === "=") {

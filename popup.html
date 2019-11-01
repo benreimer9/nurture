@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700|Roboto&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,600,700|Roboto&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -31,13 +31,14 @@
     <div id="homeModule" class="hide">
       <div class="header">
         <p class="title">Nurture</p>
-        <div class="addNew"><img src="/images/add.svg" /></div>
+        <!-- <div class="addNew"><img src="/images/add.svg" /></div> -->
         <div class="about"><img src="/images/about.svg" /></div>
         <div class="delete"><img src="/images/delete.svg" /></div>
         <div class="close"><img src="/images/close.svg" /></div>
       </div>
       <div class="body">
-        <div class="nurtureItemList"></div>
+        <div class="nurtureItemList">
+        </div>
       </div>
     </div>
     <div id="itemModule" class="hide">
@@ -50,24 +51,24 @@
         <p class="displayAction"></p>
         <p class="displayReason"></p>
         <div class="faces">
-          <div class="face notTrue">
-            <img id="notTrue" src="/images/like-notTrue.svg" />
+          <div id="notTrue" class="face notTrue">
+            <img src="/images/like-notTrue.svg" />
             <div class="dots"></div>
           </div>
-          <div class="face mostlyNotTrue">
-            <img id="mostlyNotTrue" src="/images/like-mostlyNotTrue.svg" />
+          <div id="mostlyNotTrue" class="face mostlyNotTrue">
+            <img src="/images/like-mostlyNotTrue.svg" />
             <div class="dots"></div>
           </div>
-          <div class="face neutral">
-            <img id="neutral" src="/images/neutral.svg" />
+          <div id="neutral" class="face neutral">
+            <img src="/images/neutral.svg" />
             <div class="dots"></div>
           </div>
-          <div class="face mostlyTrue">
-            <img id="mostlyTrue" src="/images/like-mostlyTrue.svg" />
+          <div id="mostlyTrue" class="face mostlyTrue">
+            <img src="/images/like-mostlyTrue.svg" />
             <div class="dots"></div>
           </div>
-          <div class="face veryTrue">
-            <img id="veryTrue" src="/images/like-veryTrue.svg" />
+          <div id="veryTrue" class="face veryTrue">
+            <img src="/images/like-veryTrue.svg" />
             <div class="dots"></div>
           </div>
         </div>

@@ -22,26 +22,26 @@ a {
   display:block;
 }
 .header {
-  background-color: #fbfbfb;
   height: 32px;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  margin-bottom: 10px;
 }
 .body{
   margin: 0 27px;
+  padding-bottom: 7px;
 }
 .title {
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 14px;
-  color: #585858;
+  color: #BFBFBF;
   margin: 0;
   margin-right: auto;
   margin-left: 15px;
 }
-.addNew,
 .close,
 .about,
 .delete {
@@ -55,7 +55,6 @@ a {
 .delete {
   padding-bottom: 5px;
 }
-.addNew:hover,
 .close:hover,
 .back:hover,
 .about:hover,
@@ -66,15 +65,9 @@ a {
 .delete.active{
   background-color: #ebebeb;
 }
-.addNew {
-  display: none;
-}
 .back {
   margin-left: 5px;
   padding:0px 5px;
-}
-.addNew {
-  display: block;
 }
 .default {
   font-size: 13px;
@@ -91,46 +84,82 @@ li {
   font-family: Roboto;
   font-size: 1rem;
   color: #585858;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
   padding-inline-start: 0px;
+}
+.nurtureItemList p{
+  font-weight: 600;
+  border-radius: 3px;
+  display: inline-block;
+  margin: 0;
+  margin-bottom: 7px;
+  padding: 10px;
+  transition: transform .1s ease-in;
+}
+.nurtureItemList p.like,
+.nurtureItemList p.love{
+  background: #D8F4DF;
+  color: #509762;
+}
+.nurtureItemList p.dislike,
+.nurtureItemList p.hate{
+  background: #F6DEDE;
+  color: #D25E5E;
+}
+p.addNew{
+  background: #FAFAFA;
+  color: #BFBFBF;
+}
+p.addNew.darker{
+  background: #EAEAEA;
+  color: #8F8F8F;
 }
 .nurtureItemList p:hover{
   cursor: pointer;
+  transform: scale(1.03);
 }
 #itemModule .header{
   justify-content: space-between;
 }
 .percent {
-  font-family: Poppins-Bold;
-  font-size: 0.7rem;
+  font-family: Poppins, sans-serif;
+  font-weight: 700;
+  margin-left: 15px;
+  font-size:0.8rem;
   pointer-events: none;
 }
 .percent.like, 
 .percent.love {
-  color: #5ed27b;
+  color: #509762;
 }
 .percent.dislike,
 .percent.hate {
-  color: #d25e5e;
+  color: #D25E5E;
 }
 .displayPercent {
   text-transform: uppercase;
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
   font-size: 0.875rem;
   font-weight: 700;
 }
 .displayAction {
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
+  font-weight:600;
   font-size: 1.25rem;
   margin-bottom:0px;
-  margin-top:36px;
+  margin-top:24px;
   text-align: center;
+  color:#5E5E5E;
 }
 .displayReason {
-  font-family: Roboto;
-  font-size: 0.875rem;
+  font-family: Roboto, sans-serif;
+  font-size: 1rem;
   margin-top:8px;
   margin-bottom: 48px;
   text-align: center;
+  color:#5E5E5E;
 }
 .faces {
   display: flex;
@@ -138,17 +167,32 @@ li {
   padding-bottom: 15px;
 }
 .face {
-  margin: 0 13px;
+  margin: 0 8px;
+  padding: 12px;
   position: relative;
+  box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.16);
+  transition: all .17s ease-out;
 }
 .face > img{
   transition: transform .2s ease;
   width: 35px;
+  pointer-events: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
-.face > img:hover{
+.face:hover{
   cursor: pointer;
   transform: scale(1.07);
-  filter: drop-shadow( 1px 1px 2px rgba(0, 0, 0, .1));
+  box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.26);
+}
+#itemModule.like .face:hover,
+#itemModule.love .face:hover{
+  background: #D8F4DF;
+}
+#itemModule.dislike .face:hover,
+#itemModule.hate .face:hover{
+  background: #F6DEDE;
 }
 .face:first-of-type::before,
 .face:last-of-type::before{
@@ -166,7 +210,7 @@ li {
 }
 .face:last-of-type::before{
   content:"very true";
-  left: -5px;
+  left: 16px;
 }
 .dots {
   display: flex;
@@ -211,7 +255,7 @@ li {
 }
 .goalToggle p {
   display:inline-block;
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
   font-weight: 700;
   font-size: 12px; 
   color: #C5C5C5;
@@ -229,7 +273,7 @@ p.small {
 }
 .intensityToggle p {
   display:inline-block;
-  font-family: Poppins;
+  font-family: Poppins, sans-serif;
   font-weight: 700;
   color: #C5C5C5;
 }
@@ -271,7 +315,7 @@ p.small {
   margin-bottom: 0px;
 }
 form p {
-  font-family: Roboto;
+  font-family: Roboto, sans-serif;
   font-size: 13px;
   color:#585858;
   margin-bottom: 4px;
