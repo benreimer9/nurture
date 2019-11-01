@@ -16,7 +16,7 @@ let activeItemId = null;
 let maxDotsToShow = 20;
 let showIntroModule = true;
 let removeIsActive = false;
-let userVersion = "1.2.1";
+let userVersion = "1.2.2";
 let intensity = "likeDislike";
 
 
